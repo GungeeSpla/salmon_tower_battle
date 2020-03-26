@@ -1,3 +1,4 @@
+export * from './scenes/loading.js';
 export * from './scenes/title.js';
 export * from './scenes/private-room.js';
 export * from './scenes/sign-in.js';

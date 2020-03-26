@@ -31,5 +31,5 @@ window.addEventListener('load', () => {
   view.initialize();
   game.initialize();
   key.initialize();
-  view.firstJump();
+  view.jump('loading');
 });

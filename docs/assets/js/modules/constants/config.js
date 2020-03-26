@@ -2,7 +2,7 @@
 // 全体
 //
 /** アプリのバージョン */
-export const APP_VERSION = '0.0.0';
+export const APP_VERSION = '0.1.0';
 /** 読んでいるindex.jsまたはbundle.jsのクエリを含むファイル名 */
 const appfile = document.getElementById('app').getAttribute('src');
 /** アプリを読み込んだ際のURLクエリパラメータ */

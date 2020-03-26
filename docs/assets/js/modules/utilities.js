@@ -527,6 +527,6 @@ export function logAsciiArt() {
 `, 'color: orange;', 'color: limegreen;', 'color: orange; font-weight: bold; font-size: 24px;');
   // アプリのバージョンとクエリが一致しなかった場合警告を出す
   if (constants.APP_VERSION !== constants.APP_VERSION_QUERY) {
-    console.log(`%cMismatch app version (${constants.APP_VERSION}) and query parameter (${constants.APP_VERSION_QUERY})`, logger.getBigMarkerStyle('pink'));
+    console.error(`%cMismatch app version (${constants.APP_VERSION}) and query parameter (${constants.APP_VERSION_QUERY})`, logger.getBigMarkerStyle('pink'));
   }
 }
