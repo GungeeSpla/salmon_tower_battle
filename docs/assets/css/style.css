@@ -1,0 +1,1805 @@
+html {
+  --shadow-x: 3px;
+  --shadow-y: 3px;
+  --shadow-color: rgba(0, 0, 0, 0.4);
+  --hover-brightness: 1.1;
+  --active-brightness: 0.95;
+  --hover-scale: 1.05;
+}
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  font-family: Splatoon2, sans-serif;
+  font-size: 30px;
+  color: #ffffff;
+  text-shadow: var(--shadow-x) var(--shadow-y) 0 var(--shadow-color);
+  background: #333 url(../img/forcss/zigzag-2.png);
+  background-size: 320px 160px;
+  background-position: center top;
+}
+p, div, canvas {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  box-sizing: border-box;
+}
+#createjs-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: left top;
+  transform: initial;
+}
+  #createjs-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  .layer {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+    .selectable {
+      pointer-events: auto;
+      cursor: text;
+    }
+    .clickable {
+      pointer-events: auto;
+      cursor: pointer;
+      user-select: none;
+    }
+    #createjs-bottom-buttons {
+      top: initial;
+      bottom: 0;
+      height: 140px;
+    }
+      #createjs-bottom-buttons div {
+        position: absolute;
+        font-size: 30px;
+        background-color: White;
+        color: Black;
+      }
+
+/** ローディング */
+#loading {
+  filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.5));
+  text-shadow: none;
+  width: 400px;
+  height: 400px;
+  position: absolute;
+  margin: auto;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  text-align: center;
+  font-family: Splatoon1;
+  font-size: 45px;
+}
+  #loading p {
+    margin: 0;
+    padding: 0;
+  }
+    #loading-tower {
+      width: 120px;
+      height: auto;
+      --delay: 0.3s;
+    }
+      @keyframes loading-tower {
+        0%, 100% { transform: translateX(-5px); }
+        50% { transform: translateX(5px); }
+      }
+      #loading-tower path {
+        animation: loading-tower 3s ease-in-out infinite;
+        fill: #ffffff;
+      }
+      #loading-tower path:nth-child(1) { animation-delay: calc(var(--delay) * -1); }
+      #loading-tower path:nth-child(2) { animation-delay: calc(var(--delay) * -2); }
+      #loading-tower path:nth-child(3) { animation-delay: calc(var(--delay) * -3); }
+      #loading-tower path:nth-child(4) { animation-delay: calc(var(--delay) * -4); }
+      #loading-tower path:nth-child(5) { animation-delay: calc(var(--delay) * -5); }
+      #loading-tower path:nth-child(6) { animation-delay: calc(var(--delay) * -6); }
+      #loading-tower path:nth-child(7) { animation-delay: calc(var(--delay) * -7); }
+      #loading-tower path:nth-child(8) { animation-delay: calc(var(--delay) * -7); }
+      #loading-tower path:nth-child(9) { animation: none }
+ 
+/** タイトルに戻る */
+.speaker {
+  position: absolute;
+  right: 10px;
+  bottom: 0px;
+  width: 100px;
+  height: 100px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: left: top;
+  filter:
+    brightness(1)
+    drop-shadow(var(--shadow-x) var(--shadow-y) 0 var(--shadow-color));
+  opacity: 0.7;
+}
+.speaker:hover {
+  opacity: 1;
+}
+.speaker:active {
+  filter:
+    drop-shadow(var(--shadow-x) var(--shadow-y) 0 var(--shadow-color));
+}
+.speaker.volume-0 {
+  background-image: url(../img/forcss/volume-0.png);
+}
+.speaker.volume-1 {
+  background-image: url(../img/forcss/volume-1.png);
+}
+.speaker.volume-2 {
+  background-image: url(../img/forcss/volume-2.png);
+}
+.speaker.volume-3 {
+  background-image: url(../img/forcss/volume-3.png);
+}
+/** タイトルに戻る */
+.return-title-rb {
+  position: absolute;
+  display: block;
+  width: 350px;
+  height: 80px;
+  right: 0px;
+  bottom: 20px;
+  font-size: 40px;
+  line-height: 80px;
+  text-align: center;
+  padding: 0 0 0 10px;
+  transform-origin: right center;
+  transition: all 300ms;
+  z-index: 99;
+  filter:
+    brightness(1.00)
+    drop-shadow(0 var(--shadow-y) 0 var(--shadow-color));
+}
+.return-title-rb:hover {
+  width: 370px;
+  filter:
+    brightness(var(--hover-brightness))
+    drop-shadow(0 var(--shadow-y) 0 var(--shadow-color));
+}
+.return-title-rb:active {
+  transition: none;
+  transform: scale(0.95);
+}
+  .return-title-rb:before {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background-color: #777777;
+    background-image: url(../img/forcss/stripe-2.png);
+    clip-path: polygon(20px 0, 100% 0%, 100% 100%, 0 100%);
+  }
+/** サインイン状態 */
+.sign-state-container {
+  position: relative;
+  margin: 20px 0;
+  display: block;
+  width: 100%;
+  height: 80px;
+  transition: transform 300ms;
+  z-index: 0;
+}
+  .sign-state {
+    position: absolute;
+    right: 0;
+    width: 300px;
+    height: 60px;
+    padding: 6px;
+    margin-right: 15px;
+    background: #111111;
+    z-index: 0;
+    border-radius: 30px;
+    white-space: nowrap;
+  }
+  #sign-in {
+    transition: all 300ms;
+  }
+  #sign-in:hover {
+    background: #03a9f4;
+    transform: scale(var(--hover-scale));
+  }
+  #sign-in:active {
+    transition: none;
+    transform: scale(1);
+  }
+  #signed-in {
+    width: auto;
+  }
+    .sign-state:before {
+      position: absolute;
+      top: 0;
+      left: 0;
+      content: "";
+      width: 100%;
+      height: 100%;
+      opacity: 0.3;
+      background: url(../img/forcss/dotted.png) 50%;
+      background-size: 40px auto;
+      border-radius: 30px;
+      z-index: -1;
+    }
+    .sign-state-photo {
+      width: 48px;
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: 4px;
+    }
+    .sign-state-sign-in,
+    .sign-state-connecting,
+    .sign-state-name {
+      height: 48px;
+      line-height: 48px;
+      display: inline-block;
+      vertical-align: top;
+      font-size: 24px;
+      width: 220px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .sign-state-name {
+      width: auto;
+      max-width: 220px;
+      margin: 0 20px 0 10px;
+    }
+    .sign-state-connecting {
+      width: 100%;
+      text-align: center;
+    }
+    .sign-state-sign-in {
+      margin-left: 70px;
+    }
+    .sign-state-sign-in:before {
+      position: absolute;
+      left: 20px;
+      top: 0px;
+      content: '';
+      background-image: url(../img/forcss/twitter-logo.png);
+      background-size: 60px 60px;
+      display: inline-block;
+      width: 60px;
+      height: 60px;
+    }
+/** バージョン */
+.title-version {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 80px;
+  line-height: 80px;
+  font-size: 40px;
+  text-align: center;
+  font-family: Splatoon1;
+  z-index: 0;
+}
+/** タイトルロゴ */
+.title-logo {
+  z-index: 0;
+  width: 100%;
+  line-height: 100px;
+  display: inline-block;
+  position: relative;
+  text-align: center;
+  font-size: 90px;
+  font-family: Splatoon1;
+  -webkit-text-stroke: 1px #ffffff;
+}
+  .title-logo-salmon {
+    color: #ff7500;
+  }
+  .title-logo-tower-battle {
+    color: #39e464;
+  }
+/** タイトルボタン */
+.title-button {
+  z-index: 0;
+  --width: 560px;
+  --height: 180px;
+  position: relative;
+  margin: 50px 0;
+  display: block;
+  left: calc(50% - var(--width) / 2);
+  width: var(--width);
+  height: var(--height);
+  padding: 50px 0 0;
+  transition: transform 300ms;
+}
+.title-button.hover,
+.title-button:hover {
+  transform:
+    rotateZ(-1deg)
+    scale(var(--hover-scale));
+}
+.title-button.active,
+.title-button:active {
+  transition: none;
+  transform:
+    rotateZ(-1deg)
+    scale(1);
+}
+  .title-button-back,
+  .title-button:after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 40px;
+    overflow: hidden;
+    -webkit-mask-image: url(../img/forcss/mask-chipped.svg);
+            mask-image: url(../img/forcss/mask-chipped.svg);
+    -webkit-mask-repeat: no-repeat;
+            mask-repeat: no-repeat;
+    -webkit-mask-size: 800px auto;
+            mask-size: 800px auto;
+    -webkit-mask-position: center top;
+            mask-position: center top;
+  }
+  .title-button-back {
+    z-index: 0;
+    background-color: #ff17e8;
+    background-image: linear-gradient(147deg, #ff17e8 0%, #da1b53 74%);
+  }
+  #play-in-offline .title-button-back {
+    background-color: #ffa63b;
+    background-image: linear-gradient(116deg, #ffa63b 0%, #FF2525 74%);
+  }
+  #create-private-room .title-button-back {
+    background-color: #e2eb0f;
+    background-image: linear-gradient(116deg, #e2eb0f 0%, #c9ca06 74%);
+  }
+  #settings .title-button-back {
+    background-color: #0febdc;
+    background-image: linear-gradient(116deg, #0febdc 0%, #06ca28 74%);
+  }
+    .title-button-back:before {
+      z-index: -1;
+      position: absolute;
+      top: 0;
+      left: 0;
+      content: "";
+      width: 100%;
+      height: 100%;
+      opacity: 0.3;
+      background: url(../img/forcss/dotted.png) 50%;
+      background-size: 60px auto;
+    }
+    .title-button-back:after {
+      z-index: -1;
+      position: absolute;
+      top: 0;
+      left: 0;
+      content: "";
+      width: 100%;
+      height: 100%;
+      opacity: 0.1;
+      background: url(../img/forcss/zigzag-1.png) 50%;
+      background-size: 600px auto;
+    }
+  .title-button-footer,
+  .title-button-content {
+    z-index: 1;
+    position: absolute;
+    width: 100%;
+    text-align: center;
+  }
+  .title-button-content {
+    font-size: 40px;
+    font-family: Splatoon1;
+  }
+  .title-button-footer {
+    opacity: 0;
+    bottom: 0;
+    height: 40px;
+    line-height: 40px;
+    font-size: 25px;
+    background-color: rgba(0, 0, 0, 0.3);
+    transition: opacity 300ms;
+    border-radius: 0 0 40px 40px;
+  }
+  .title-button.hover .title-button-footer,
+  .title-button:hover .title-button-footer {
+    opacity: 1;
+  }
+  .title-button:after {
+    z-index: -2;
+    content: "";
+    top: var(--shadow-y);
+    left: var(--shadow-x);
+    background: var(--shadow-color);
+  }
+/** コンフィグの説明 */
+.config-desc {
+  --width: 640px;
+  --height: 80px;
+  left: calc(50% - var(--width) / 2);
+  position: relative;
+  font-size: 30px;
+  line-height: 40px;
+  margin: 25px 0;
+  pointer-events: auto;
+}
+.config-desc:first-child {
+  margin-top: 100px;
+}
+/** コンフィグ */
+.config-line {
+  --width: 640px;
+  --height: 80px;
+  left: calc(50% - var(--width) / 2);
+  position: relative;
+  margin: 25px 0 50px;
+  background-color: #444444;
+  width: var(--width);
+  height: var(--height);
+  line-height: var(--height);
+  border-radius: calc(var(--height) / 2);
+  overflow: hidden;
+  filter: drop-shadow(var(--shadow-x) var(--shadow-y) 0 var(--shadow-color));
+  font-size: 30px;
+  pointer-events: auto;
+}
+  .config-line:before {
+    position: absolute;
+    top: 0;
+    left: 0;
+    content: "";
+    width: 100%;
+    height: 100%;
+    opacity: 0.2;
+    background: url(../img/forcss/zigzag-1.png) 50%;
+    background-size: 600px auto;
+  }
+  .config-line-content {
+    position: absolute;
+    top: 0;
+    left: 30px;
+    font-family: Splatoon1;
+  }
+  .config-line-item-container {
+    position: absolute;
+    display: inline-block;
+    background: #000000;
+    margin: 10px;
+    height: 60px;
+    line-height: 60px;
+    border-radius: 30px;
+    right: 0;
+  }
+    .config-line-item {
+      position: relative;
+      display: inline-block;
+      width: 130px;
+      text-align: center;
+      margin: 5px 6px;
+      height: 50px;
+      line-height: 50px;
+      border-radius: 25px;
+      background-color: #222222;
+      margin-right: 10px;
+      transition: all 300ms;
+    }
+    .config-line-item:hover {
+      filter: brightness(var(--hover-brightness));
+      transform: scale(var(--hover-scale));
+    }
+    .config-line-item:active {
+      transition: none;
+      transform: scale(1);
+    }
+    .config-line-item.selected {
+      z-index: 0;
+      background-color: #00f16c;
+    }
+    .config-line-item.selected:before {
+      z-index: 0;
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: block;
+      opacity: 0.08;
+      background-image: url(../img/forcss/bubble.png);
+      background-size: 200px auto;
+      animation: config-line-item 30s linear infinite;
+    }
+    @keyframes config-line-item {
+      0%   { background-position: 0px 0px; }
+      100% { background-position: calc(200px * 2) calc(200px * (480 / 960) * (-1)); }
+    }
+    .config-line-item:last-child {
+      margin-right: 6px;
+    }
+/** 招待カード */
+.invite-card {
+  position: absolute;
+  display: block;
+  --width: 600px;
+  --height: 600px;
+  width: var(--width);
+  height: var(--height);
+  left: calc(50% - var(--width) / 2);
+  top: calc(50% - var(--height) / 2);
+  padding: 90px 0 0;
+  z-index: 0;
+  pointer-events: auto;
+}
+  .invite-card-back,
+  .invite-card:after {
+    position: absolute;
+    overflow: hidden;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    border-radius: 40px;
+    z-index: -1;
+    -webkit-mask-image: url(../img/forcss/mask-holed.png);
+            mask-image: url(../img/forcss/mask-holed.png);
+    -webkit-mask-repeat: no-repeat;
+            mask-repeat: no-repeat;
+    -webkit-mask-size: 1000px auto;
+            mask-size: 1000px auto;
+    -webkit-mask-position: center top;
+            mask-position: center top;
+  }
+  .invite-card-back {
+    background-color: #000000;
+  }
+  .invite-card-back:before,
+  .invite-card:after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    content: "";
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  .invite-card-back:before {
+    opacity: 0.15;
+    background: url(../img/forcss/dotted.png) 50%;
+    background-size: 80px auto;
+    z-index: -1;
+  }
+  .invite-card:after {
+    top: var(--shadow-y);
+    left: var(--shadow-x);
+    background: var(--shadow-color);
+    z-index: -2;
+  }
+  .invite-photo,
+  .invite-message,
+  .invite-join-button {
+    position: relative;
+    display: block;
+    z-index: 1;
+  }
+  .invite-photo {
+    border-radius: 50%;
+    width: 140px;
+    margin: 0 auto;
+  }
+  .invite-message {
+    font-size: 35px;
+    width: 100%;
+    height: 240px;
+    padding: 30px 60px;
+    line-height: 150%;
+    text-align: center;
+  }
+  #invite-card-not-signed .invite-message {
+    padding-top: 140px;
+    padding-bottom: 240px;
+  }
+  #invite-card-invalid .invite-message {
+    padding-top: 180px;
+    text-align: center;
+  }
+    .invite-message b {
+      color: #ff7500;
+      font-weight: normal;
+    }
+    #invite-user {
+      color: #ff7500;
+      position: relative;
+      display: inline;
+      -webkit-text-stroke: initial;
+    }
+  .invite-sign-in-button,
+  .invite-join-button {
+    width: 400px;
+    height: 80px;
+    line-height: 80px;
+    border-radius: 80px;
+    overflow: hidden;
+    font-size: 40px;
+    font-family: Splatoon1;
+    margin: 0 auto;
+    background-color: #08AEEA;
+    background-image: linear-gradient(290deg, #08AEEA 0%, #2AF598 100%);
+    text-align: center;
+    cursor: pointer;
+    user-select: none;
+    transition: all 300ms;
+    transform: scale(1);
+    filter:
+      brightness(1)
+      drop-shadow(0px 10px 10px rgba(40, 90, 80, 0.5));
+    z-index: 2;
+  }
+  .invite-sign-in-button {
+    font-size: 30px;
+    padding-left: 40px;
+  }
+    .invite-sign-in-button:after {
+      position: absolute;
+      left: 20px;
+      top: 10px;
+      content: '';
+      background-image: url(../img/forcss/twitter-logo.png);
+      background-size: 60px 60px;
+      display: inline-block;
+      width: 60px;
+      height: 60px;
+      filter: drop-shadow(var(--shadow-x) var(--shadow-y) 0 var(--shadow-color));
+    }
+  .invite-sign-in-button:hover,
+  .invite-join-button:hover {
+    transform: scale(var(--hover-scale));
+    filter: brightness(var(--hover-brightness));
+  }
+  .invite-sign-in-button:active,
+  .invite-join-button:active {
+    transition: none;
+    transform: scale(1);
+    filter: brightness(1);
+  }
+    .invite-sign-in-button:before,
+    .invite-join-button:before {
+      position: absolute;
+      top: 0;
+      left: 0;
+      content: "";
+      width: 100%;
+      height: 100%;
+      opacity: 0.08;
+      background: url(../img/forcss/bubble.png) 50%;
+      background-size: 400px auto;
+      z-index: -1;
+      animation: invite-join-button 60s linear infinite;
+    }
+    @keyframes invite-join-button {
+      0%   { background-position: 0px 0px; }
+      100% { background-position: calc(400px * 2) calc(400px * (480 / 960) * (-1)); }
+    }
+/** アラート */
+.alert-outer {
+  z-index: 9999;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  background: radial-gradient(circle, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.6) 100%);
+  opacity: 0;
+  transition: opacity 300ms;
+}
+.alert-showed.alert-outer {
+  transition: opacity 300ms;
+  opacity: 1;
+  pointer-events: auto;
+}
+  /** アラート */
+  .alert {
+    position: absolute;
+    --width: 600px;
+    --height: 600px;
+    width: var(--width);
+    height: var(--height);
+    height: auto;
+    left: calc(50% - var(--width) / 2);
+    top: calc(50% - var(--height) / 2);
+    padding: 120px 0 50px;
+    z-index: 0;
+    transition: transform 300ms;
+    transform: rotate(-1deg) translateY(20px);
+  }
+  .alert-showed .alert {
+    transform: rotate(-1deg) translateY(0);
+  }
+    /** アラートの背景 */
+    .alert-back,
+    .alert:after {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      border-radius: 40px;
+      z-index: 0;
+      -webkit-mask-image: url(../img/forcss/mask-hooked.png);
+              mask-image: url(../img/forcss/mask-hooked.png);
+      -webkit-mask-repeat: no-repeat;
+              mask-repeat: no-repeat;
+      -webkit-mask-size: 600px auto;
+              mask-size: 600px auto;
+      -webkit-mask-position: center top;
+              mask-position: center top;
+    }
+    .alert-back {
+      background-color: #000000;
+      pointer-events: none;
+      user-select: none;
+    }
+      .alert-back:before,
+      .alert:after {
+        position: absolute;
+        top: 0;
+        left: 0;
+        content: "";
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+      .alert-back:before {
+        opacity: 0.15;
+        background: url(../img/forcss/dotted.png) 50%;
+        background-size: 60px auto;
+        z-index: -1;
+      }
+      .alert-back-img-outer {
+        opacity: 0.15;
+      }
+        .alert-back img {
+          position: absolute;
+        }
+        .alert-back img:nth-child(1) {
+          right: 0;
+          bottom: 0;
+          transform: translate(37px, 38px) scale(0.7) rotate(11deg);
+        }
+        .alert-back img:nth-child(2) {
+          left: 0;
+          top: 0;
+          transform: translate(-40px, 73px) scale(0.7) rotate(21deg);
+        }
+        .alert-back img:nth-child(3) {
+          left: 0;
+          top: 0;
+          transform: translate(53px, 49px) scale(0.7) rotate(-17deg);
+        }
+        .alert-back img:nth-child(4) {
+          left: 0;
+          bottom: 0;
+          transform: translate(-7px, -10px) scale(0.7) rotate(-5deg);
+        }
+    .alert:after {
+      top: var(--shadow-y);
+      left: var(--shadow-x);
+      background: var(--shadow-color);
+      z-index: -2;
+    }
+    /** アラートのタイトル、メッセージ */
+    .alert-title,
+    .alert-message {
+      position: relative;
+      display: block;
+      z-index: 1;
+      font-size: 35px;
+      width: 100%;
+      padding: 0px 50px;
+      line-height: 150%;
+      text-align: center;
+    }
+    .alert-title {
+      color: #ff7500;
+      margin-top: 30px;
+    }
+    .alert-message {
+      margin-top: 30px;
+      padding-bottom: 80px;
+    }
+      .alert-message b {
+        font-weight: normal;
+        color: #ff7500;
+      }
+    /** アラートのボタン */
+    .alert-button-outer {
+      position: absolute;
+      bottom: -100px;
+      width: 100%;
+      text-align: center;
+      user-select: none;
+    }
+      .alert-button {
+        text-align: center;
+        font-size: 35px;
+        position: relative;
+        display: inline-block;
+        width: 260px;
+        height: 180x;
+        padding-top: 5px;
+        line-height: 180px;
+        z-index: 2;
+        transition: all 300ms;
+      }
+      .alert-button:hover {
+        transform: scale(var(--hover-scale));
+      }
+      .alert-button:active {
+        transition: none;
+        transform: scale(1);
+      }
+        .alert-button:before,
+        .alert-button:after {
+          z-index: -1;
+          content: '';
+          display: block;
+          top: 0;
+          left: 0;
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          background-color: #2174fd;
+          background-image: linear-gradient(0deg, #2174fd 0%, #9211d0 100%);
+          -webkit-mask-image: url(../img/forcss/alert-button.svg);
+                  mask-image: url(../img/forcss/alert-button.svg);
+          -webkit-mask-repeat: no-repeat;
+                  mask-repeat: no-repeat;
+          -webkit-mask-size: 260px auto;
+                  mask-size: 260px auto;
+          -webkit-mask-position: center top;
+                  mask-position: center top;
+          transition: all 150ms;
+        }
+        .alert-button:hover:before,
+        .alert-button:hover:after {
+          background-color: #0ae4af;
+          background-image: linear-gradient(0deg, #0ae4af 0%, #0fe423 100%);
+          -webkit-mask-image: url(../img/forcss/alert-button-hover.svg);
+                  mask-image: url(../img/forcss/alert-button-hover.svg);
+        }
+        .alert-button:after {
+          z-index: -2;
+          content: '';
+          top: var(--shadow-y);
+          left: var(--shadow-x);
+          background: var(--shadow-color);
+        }
+        .alert-button:hover:after {
+          background: var(--shadow-color);
+        }
+/** 開始待機メッセージ */
+.waiting-start {
+  z-index: 0;
+  width: 100%;
+  line-height: 100px;
+  display: inline-block;
+  position: relative;
+  text-align: center;
+  font-size: 35px;
+}
+/** 招待URL表示ボタン */
+.drop-button,
+.show-url-button {
+  z-index: 0;
+  --width: 320px;
+  --height: 80px;
+  left: calc(50% - var(--width) / 2);
+  position: relative;
+  margin: 50px 0 50px;
+  background-color: #444444;
+  width: var(--width);
+  height: var(--height);
+  line-height: var(--height);
+  border-radius: calc(var(--height) / 2);
+  overflow: hidden;
+  filter: drop-shadow(var(--shadow-x) var(--shadow-y) 0 var(--shadow-color));
+  font-size: 30px;
+  background-color: #4b00de;
+  background-image: linear-gradient(112deg, #4b00de 0%, #b900ff 100%);
+  transition: all 300ms;
+  text-align: center;
+}
+.drop-button:hover,
+.show-url-button:hover {
+  transform: scale(var(--hover-scale));
+}
+.drop-button:active,
+.show-url-button:active {
+  transition: none;
+  transform: scale(1);
+}
+  .drop-button:before,
+  .show-url-button:before {
+    z-index: -1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    content: "";
+    width: 100%;
+    height: 100%;
+    opacity: 0.15;
+    background-image: url(../img/forcss/stripe-1.png);
+    background-size: 200px auto;
+  }
+/** ゲーム開始ボタン */
+.game-start-button {
+  --width: 380px;
+  --height: 500px;
+  left: calc(50% - var(--width) / 2);
+  font-size: 50px;
+  position: absolute;
+  bottom: -20px;
+  display: inline-block;
+  width: var(--width);
+  height: var(--height);
+  padding: 35px 0 0 15px;
+  margin: 50px 0;
+  text-align: center;
+  line-height: 290px;
+  z-index: 2;
+  transition: all 300ms;
+  white-space: nowrap;
+}
+.game-start-button:hover {
+  transform: scale(var(--hover-scale));
+}
+.game-start-button:active {
+  transition: none;
+  transform: scale(1);
+}
+  .game-start-button:before,
+  .game-start-button:after {
+    z-index: -1;
+    content: '';
+    display: block;
+    top: 0;
+    left: 0;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #2174fd;
+    background-image: linear-gradient(0deg, #2174fd 0%, #9211d0 100%);
+    -webkit-mask-image: url(../img/forcss/game-start.svg);
+            mask-image: url(../img/forcss/game-start.svg);
+    -webkit-mask-repeat: no-repeat;
+            mask-repeat: no-repeat;
+    -webkit-mask-size: 380px auto;
+            mask-size: 380px auto;
+    -webkit-mask-position: center top;
+            mask-position: center top;
+    transition: all 150ms;
+  }
+  .game-start-button:hover:before,
+  .game-start-button:hover:after {
+    background-color: #0ae4af;
+    background-image: linear-gradient(0deg, #0ae4af 0%, #0fe423 100%);
+    -webkit-mask-image: url(../img/forcss/game-start-hover.svg);
+            mask-image: url(../img/forcss/game-start-hover.svg);
+  }
+  .game-start-button:after {
+    z-index: -2;
+    content: '';
+    top: var(--shadow-y);
+    left: var(--shadow-x);
+    background: var(--shadow-color);
+  }
+  .game-start-button:hover:after {
+    background: var(--shadow-color);
+  }
+/** ルームメンバーのアウター */
+.room-member-outer {
+  position: relative;
+  width: 720px;
+  left: calc(50% - 360px);
+  padding: 0 0 0 40px;
+  user-select: none;
+}
+.room-member-outer-gest {
+  margin: 180px 0px;
+}
+  /** ルームメンバー */
+  .room-member {
+    z-index: 0;
+    position: relative;
+    display: inline-block;
+    width: 200px;
+    height: 270px;
+    text-align: center;
+    padding: 60px 20px 0px;
+    margin: 0px 10px 15px 0;
+    pointer-events: auto;
+    user-select: text;
+  }
+    .room-member-back,
+    .room-member:after {
+      position: absolute;
+      overflow: hidden;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      border-radius: 40px;
+      z-index: 0;
+      -webkit-mask-image: url(../img/forcss/mask-holed.png);
+              mask-image: url(../img/forcss/mask-holed.png);
+      -webkit-mask-repeat: no-repeat;
+              mask-repeat: no-repeat;
+      -webkit-mask-size: 900px auto;
+              mask-size: 900px auto;
+      -webkit-mask-position: center top;
+              mask-position: center top;
+    }
+    .room-member-back {
+      background-color: #444444;
+    }
+    .room-member[state="waiting"] .room-member-back {
+      background-color: #01DE40;
+    }
+    .room-member-back:before,
+    .room-member:after {
+      position: absolute;
+      top: 0;
+      left: 0;
+      content: "";
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+    .room-member-back:before {
+      opacity: 0.12;
+      background: url(../img/forcss/bubble.png) 50%;
+      background-size: 300px auto;
+      z-index: -1;
+    }
+    .room-member[state="waiting"] .room-member-back:before {
+      opacity: 0.04;
+    }
+    .room-member-photo,
+    .room-member-name {
+      position: relative;
+      z-index: 1;
+    }
+    .room-member-photo {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+    }
+    .room-member-name {
+      font-size: 24px;
+      width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      line-height: 24px;
+    }
+      .room-member:after {
+        top: var(--shadow-y);
+        left: var(--shadow-x);
+        background: var(--shadow-color);
+        z-index: -2;
+      }
+      .room-member-state {
+        display: block;
+        background: #444444;
+        font-size: 24px;
+        width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        z-index: 0;
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        border-radius: 0 0 40px 40px;
+        text-align: right;
+        padding: 0 30px 0 0;
+        color: #999999;
+        background-color: #444444;
+      }
+      .room-member[state="waiting"] .room-member-state {
+        color: #444444;
+        text-shadow: none;
+        background-color: #00F630;
+      }
+/** 回転ボタンと落下ボタンのアウター */
+.ope-button-outer {
+  /* top: calc(50% + 420px); */
+  bottom: 60px;
+  left: calc(50% - 360px);
+  width: 720px;
+  height: 160px;
+  z-index: 1;
+  position: absolute;
+}
+/** 回転ボタン */
+.rotate-button {
+  top: 0;
+  left: 100px;
+  width: 140px;
+  height: 140px;
+  z-index: 2;
+  position: absolute;
+  font-size: 50px;
+  display: block;
+  background-color: #636363;
+  background-image: linear-gradient(147deg, #636363 0%, #313131 74%);
+  border-radius: 50%;
+  padding: 30px 0 0 30px;
+}
+.rotate-button:hover {
+  filter: brightness(var(--hover-brightness));
+}
+.rotate-button:active {
+  filter: brightness(var(--active-brightness));
+}
+  .rotate-button img {
+    filter: drop-shadow(var(--shadow-x) var(--shadow-y) 0 var(--shadow-color));
+    width: 80px;
+    height: 80px;
+  }
+/** 落下ボタン */
+.drop-button {
+  --width: 320px;
+  --height: 140px;
+  position: absolute;
+  top: 0;
+  left: 300px;
+  margin: 0;
+  padding: 0;
+  font-size: 40px;
+  font-family: Splatoon1;
+  transition: none;
+}
+.drop-button:hover {
+  filter:
+    brightness(var(--hover-brightness))
+    drop-shadow(var(--shadow-x) var(--shadow-y) 0 var(--shadow-color));
+  transform: none;
+}
+.drop-button:active {
+  filter:
+    brightness(var(--active-brightness))
+    drop-shadow(var(--shadow-x) var(--shadow-y) 0 var(--shadow-color));
+  transform: none;
+}
+/** 誰のターンか */
+.turn-title {
+  width: 720px;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  font-size: 55px;
+  font-family: Splatoon1;
+  transition: none;
+  animation: turn-title 1s ease-out alternate infinite;
+}
+@keyframes turn-title {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+  #turn-name {
+    display: inline-block;
+    vertical-align: bottom;
+    max-width: 480px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+/** (オフラインモード) 高さ */
+.game-tower-height {
+  z-index: 0;
+  position: absolute;
+  display: block;
+  left: 35px;
+  top: 250px;
+  width: 100%;
+  height: 60px;
+  line-height: 35px;
+  font-size: 35px;
+}
+.game-panel-count span:first-child:after,
+.game-tower-height span:first-child:after {
+  content: ': ';
+}
+/** (オフラインモード) パネルの数 */
+.game-panel-count {
+  z-index: 0;
+  position: absolute;
+  display: block;
+  left: 35px;
+  top: 200px;
+  width: 100%;
+  height: 60px;
+  line-height: 35px;
+  font-size: 35px;
+}
+/** 残り時間 */
+.left-time {
+  z-index: 0;
+  position: absolute;
+  display: block;
+  left: 0;
+  top: 150px;
+  width: 100%;
+  height: 60px;
+  line-height: 60px;
+  font-size: 60px;
+  text-align: center;
+}
+.left-time.animation {
+  animation: left-time 1s ease 1 forwards;
+}
+.left-time.animation[time="0"] {
+  animation: left-time-0 1s ease 1 forwards;
+}
+  @keyframes left-time {
+    0% { transform: scale(1.2); }
+    20%, 100% { transform: scale(1); }
+  }
+  @keyframes left-time-0 {
+    0% { transform: scale(1.3); opacity: 1; }
+    20% { transform: scale(1); }
+    100% { transform: scale(1); opacity: 0; }
+  }
+/** 手数とシャケ名 */
+.step-info {
+  z-index: 0;
+  position: absolute;
+  display: block;
+  --width: 400px;
+  --height: 80px;
+  min-width: var(--width);
+  height: var(--height);
+  line-height: var(--height);
+  left: 0;
+  /* top: calc(50% - 560px); */
+  top: 60px;
+  z-index: 0;
+  font-family: Splatoon1;
+  font-size: 35px;
+  transform: skewY(-4deg);
+  padding: 0 80px 0 40px;
+  pointer-events: auto;
+  cursor: text;
+}
+  .step-info:before,
+  .step-info:after {
+    position: absolute;
+    content: "";
+    display: block;
+    overflow: hidden;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    z-index: 0;
+    -webkit-mask-image: url(../img/forcss/step-info.png);
+            mask-image: url(../img/forcss/step-info.png);
+    -webkit-mask-repeat: no-repeat;
+            mask-repeat: no-repeat;
+    -webkit-mask-size: cover;
+            mask-size: cover;
+    -webkit-mask-position: center right;
+            mask-position: center right;
+  }
+  .step-info:before {
+    z-index: -1;
+    background-color: #35bc4b;
+  }
+  .step-info:after {
+    z-index: -2;
+    top: var(--shadow-y);
+    left: var(--shadow-x);
+    background: var(--shadow-color);
+  }
+/** 招待URL */
+.invite-url-title {
+  color: #ff7500;
+}
+.invite-url {
+  background: #ffffff;
+  font-size: 20px;
+  width: 490px;
+  height: 110px;
+  padding: 20px;
+  color: #666666;
+  font-family: sans-serif;
+  word-break: break-all;
+  line-height: 120%;
+  display: inline-block;
+  vertical-align: top;
+  text-align: left;
+  text-shadow: none;
+  border-radius: 5px 0 0 5px;
+  pointer-events: auto;
+  cursor: auto;
+  user-select: text;
+}
+.invite-url-copy {
+  vertical-align: top;
+  display: inline-block;
+  width: 110px;
+  height: 110px;
+  line-height: 110px;
+  text-align: center;
+  font-size: 30px;
+  background-color: #00bcd4;
+  border-radius: 0 5px 5px 0;
+  font-family: Splatoon1;
+}
+.invite-url-copy:hover {
+  filter: brightness(var(--hover-brightness));
+}
+.invite-url-copy:active {
+  filter: brightness(var(--active-brightness));
+  box-shadow: 0 4px 0 var(--shadow-color) inset;
+  padding-top: 4px;
+}
+.invite-url-copied {
+  font-size: 35px;
+  margin-top: 10px;
+  text-align: center;
+  color: #00bcd4;
+  line-height: 120%;
+  opacity: 0;
+}
+.invite-url-copied.animation {
+  animation: invite-url-copied 2s ease 1;
+}
+@keyframes invite-url-copied {
+  0%, 80% { opacity: 1; }
+  100% { opacity: 0; }
+}
+.invite-url-desc {
+  font-size: 40px;
+  text-align: center;
+  line-height: 120%;
+  margin: 150px 0 150px;
+}
+.invite-url-close {
+  font-size: 40px;
+  text-align: center;
+  color: #ffffff;
+  padding: 20px 0;
+  height: 180px;
+  line-height: 180px;
+  font-family: Splatoon1;
+}
+.invite-url-close:hover {
+  color: #00bcd4;
+}
+.invite-url-close:active {
+  color: #009aad;
+}
+/** タイトルに戻るボタン(左下) */
+.return-title-lb {
+  z-index: 1;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  background-color: #444444;
+  width: 180px;
+  height: 180px;
+  line-height: 100%;
+  font-size: 35px;
+  background-color: #4b00de;
+  background-image: linear-gradient(112deg, #4b00de 0%, #b900ff 100%);
+  -webkit-mask-image: url(../img/forcss/return-back.png);
+          mask-image: url(../img/forcss/return-back.png);
+  -webkit-mask-repeat: no-repeat;
+          mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+          mask-size: contain;
+  -webkit-mask-position: bottom left;
+          mask-position: bottom left;
+  padding: 130px 15px 0 0;
+  text-align: center;
+}
+.return-title-lb:hover {
+  filter: brightness(var(--hover-brightness));
+}
+.return-title-lb:active {
+  filter: brightness(var(--active-brightness));
+}
+  .return-title-lb:before {
+    z-index: -1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    content: "";
+    width: 90px;
+    height: 90px;
+    left: 35px;
+    top: 35px;
+    background-image: url(../img/forcss/return-arrow.svg);
+    background-size: 100% 100%;
+  }
+/** スパイキーボタン */
+.spiky-button {
+  font-size: 35px;
+  position: relative;
+  display: inline-block;
+  left: calc(50% - 315px);
+  width: 630px;
+  height: 180px;
+  padding-top: 5px;
+  line-height: 190px;
+  z-index: 2;
+  transition: all 300ms;
+  padding: 15px 0 0 40px;
+  margin: 0 0 30px 50px;
+}
+.spiky-button:first-child {
+  margin-top: 120px;
+}
+.spiky-button:active {
+  transition: none;
+  transform: scale(0.96);
+}
+  .spiky-button:before,
+  .spiky-button:after {
+    z-index: -1;
+    content: '';
+    display: block;
+    top: 0;
+    left: 0;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #2174fd;
+    background-image: linear-gradient(0deg, #2174fd 0%, #9211d0 100%);
+    -webkit-mask-image: url(../img/forcss/spiky-button.svg);
+            mask-image: url(../img/forcss/spiky-button.svg);
+    -webkit-mask-repeat: no-repeat;
+            mask-repeat: no-repeat;
+    -webkit-mask-size: 600px 200px;
+            mask-size: 600px 200px;
+    -webkit-mask-position: top left;
+            mask-position: top left;
+    transition: all 150ms;
+  }
+  .spiky-button.danger:before,
+  .spiky-button.danger:after {
+    background-color: #ff923b;
+    background-image: linear-gradient(180deg, #ff923b 0%, #d71212 74%);
+  }
+  .spiky-button:hover:before,
+  .spiky-button:hover:after {
+    background-color: #0ae4af;
+    background-image: linear-gradient(0deg, #0ae4af 0%, #0fe423 100%);
+    -webkit-mask-image: url(../img/forcss/spiky-button-hover.svg);
+            mask-image: url(../img/forcss/spiky-button-hover.svg);
+    -webkit-mask-size: 660px 200px;
+            mask-size: 660px 200px;
+  }
+  .spiky-button:after {
+    z-index: -2;
+    content: '';
+    top: var(--shadow-y);
+    left: var(--shadow-x);
+    background: var(--shadow-color);
+  }
+  .spiky-button:hover:after {
+    background: var(--shadow-color);
+  }
+/** 右上メニュー */
+.game-menu-rt {
+  z-index: 1;
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  background-color: #FF9800;
+  width: 130px;
+  height: 80px;
+  border-radius: 45px;
+  line-height: 100%;
+  font-size: 35px;
+  padding: 0;
+  text-align: center;
+}
+.game-menu-rt:hover {
+  filter: brightness(var(--hover-brightness));
+}
+.game-menu-rt:active {
+  filter: brightness(var(--active-brightness));
+}
+  .game-menu-rt:before {
+    z-index: -1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    content: "";
+    width: 100%;
+    height: 100%;
+    opacity: 0.8;
+    background-image: url(../img/forcss/return-arrow.svg);
+    background-size: 50px auto;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+/** ゲーム画面カバー */
+.invite-url-outer,
+.game-menu-outer {
+  position: absolute;
+  width: 100.2%;
+  height: 100.2%;
+  top: -0.1%;
+  left: -0.1%;
+  z-index: 999;
+  pointer-events: auto;
+  padding-top: 100px;
+  animation: game-menu-outer 300ms forwards;
+  user-select: none;
+  text-align: center;
+}
+@keyframes game-menu-outer {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+  .invite-url-outer:before,
+  .game-menu-outer:before {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    content: '';
+    z-index: -1;
+    opacity: 0.8;
+    background-color: #080808;
+    background-image: url(../img/forcss/stripe-1.png);
+    -webkit-mask-image: url(../img/forcss/wave-1.png);
+            mask-image: url(../img/forcss/wave-1.png);
+    -webkit-mask-repeat: repeat-x;
+            mask-repeat: repeat-x;
+    -webkit-mask-size: 720px 120%;
+            mask-size: 720px 120%;
+    -webkit-mask-position: 0px 0px;
+            mask-position: 0px 0px;
+    animation: game-menu-outer-before 1s cubic-bezier(.31,1.44,.6,1) forwards;
+  }
+  @keyframes game-menu-outer-before {
+    0% { -webkit-mask-position-y: 100px; mask-position-y: 100px;}
+    100% { -webkit-mask-position-y: 0px; mask-position-y: 0px; }
+  }
+  .game-menu-button-outer {
+    width: 100%;
+    padding: 0 40px;
+    text-align: center;
+    white-space: nowrap;
+    margin: 60px 0;
+  }
+  .gemu-menu-button-desc {
+    display: inline-block;
+    vertical-align: middle;
+    width: 300px;
+    text-align: center;
+    margin: 0 0 0 0px;
+    line-height: 130%;
+    font-size: 35px;
+    pointer-events: auto;
+    user-select: text;
+  }
+  .gemu-menu-button-desc.right {
+    transform: translateX(-20px);
+  }
+  .gemu-menu-button-desc.left {
+    transform: translateX(20px);
+  }
+    .game-menu-outer .alert-button {
+      font-size: 25px;
+      transform: scale(1.3);
+    }
+    .game-menu-outer .alert-button:hover {
+      transform: scale(1.4);
+    }
+    .game-menu-outer .alert-button:active {
+      transition: none;
+      transform: scale(1.3);
+    }
+  .game-result-again,
+  .game-result-return,
+  .game-menu-close {
+    width: 100%;
+    height: 200px;
+    line-height: 200px;
+    font-size: 40px;
+    text-align: center;
+    font-family: Splatoon1;
+  }
+  .game-result-again:hover,
+  .game-result-return:hover,
+  .game-menu-close:hover {
+    color: #00bcd4;
+  }
+  .game-result-again:active,
+  .game-result-return:active,
+  .game-menu-close:active {
+    color: #009aad;
+  }
+/** ログ */
+.push-log {
+  font-family: Splatoon1;
+  position: absolute;
+  font-size: 70px;
+  width: 100%;
+  text-align: center;
+  vertical-align: middle;
+  height: 80px;
+  line-height: 80px;
+  left: 0;
+  top: 530px;
+  animation: push-log 3s ease 1 forwards;
+}
+@keyframes push-log {
+  0% { transform: scale(0.7); opacity: 0; }
+  20%, 80% { transform: scale(1); opacity: 1; }
+  100% { opacity: 0; }
+}
+/** リザルト */
+@keyframes result-fadein {
+  0% { transform: translateY(10px); opacity: 0; }
+  100% { transform: translateY(0px); opacity: 1; }
+}
+@keyframes result-rotatein {
+  0% { transform: translateY(50px) rotate(2deg); opacity: 0; }
+  100% { transform: translateY(0px) rotate(-2deg); opacity: 1; }
+}
+/** リザルト - ゲーム画面スクショ */
+.game-result-container {
+  position: relative;
+  width: 720px;
+  height: 1280px;
+}
+/** リザルト - ゲーム画面スクショ */
+.result-screen {
+  font-size: 40px;
+  width: 320px;
+  transform: rotate(-2deg);
+  border: 9px solid #fff;
+  position: absolute;
+  left: 30px;
+  top: 90px;
+  opacity: 0;
+  animation: result-rotatein 1s ease 0.5s forwards;
+}
+/** リザルト - 詳細 */
+.result-detail {
+  position: absolute;
+  left: 420px;
+  top: 150px;
+  width: 240px;
+  height: 590px;
+  font-size: 40px;
+  line-height: 60px;
+  white-space: nowrap;
+  opacity: 0;
+  animation: result-fadein 1s ease 1s forwards;
+}
+  .result-fall-count-desc,
+  .result-ride-count-desc,
+  .result-height-desc {
+    text-align: left;
+    pointer-events: auto;
+    user-select: text;
+    cursor: text;
+  }
+  .result-fall-count,
+  .result-ride-count,
+  .result-height {
+    text-align: right;
+    margin-bottom: 40px;
+    pointer-events: auto;
+    user-select: text;
+    cursor: text;
+  }
+/** リザルト - WIN! */
+.result-win-text {
+  pointer-events: auto;
+  user-select: text;
+  cursor: text;
+  position: absolute;
+  width: 400px;
+  height: 340px;
+  top: 540px;
+  left: -10px;
+  text-align: center;
+  line-height: 340px;
+  font-size: 40px;
+  font-family: Splatoon1;
+  padding: 0 0 0 30px;
+  background: #00BCD4;
+  -webkit-mask-image: url(../img/forcss/win-back.svg);
+  mask-image: url(../img/forcss/win-back.svg);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 320px 280px;
+  mask-size: 320px 280px;
+  -webkit-mask-position: center center;
+  mask-position: center center;
+  opacity: 0;
+  animation: result-fadein 1s ease 1.5s forwards;
+}
+/** リザルト - 勝者アイコン */
+.result-winner {
+  top: 680px;
+  left: 0;
+  width: 100%;
+  position: absolute;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  opacity: 0;
+  animation: result-fadein 1s ease 1.5s forwards;
+}
+  .result-winner img {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    border: 10px solid #00BCD4;
+  }
+  .result-winner span {
+    pointer-events: auto;
+    user-select: text;
+    cursor: text;
+    font-size: 50px;
+    line-height: 50px;
+    text-shadow: rgba(0, 0, 0, 0.4) 2px 2px 0px, rgb(0, 188, 212) 4px 0px 0px, rgb(0, 188, 212) 3.87565px 0.989616px 0px, rgb(0, 188, 212) 3.51033px 1.9177px 0px, rgb(0, 188, 212) 2.92676px 2.72656px 0px, rgb(0, 188, 212) 2.16121px 3.36588px 0px, rgb(0, 188, 212) 1.26129px 3.79594px 0px, rgb(0, 188, 212) 0.282949px 3.98998px 0px, rgb(0, 188, 212) -0.712984px 3.93594px 0px, rgb(0, 188, 212) -1.66459px 3.63719px 0px, rgb(0, 188, 212) -2.51269px 3.11229px 0px, rgb(0, 188, 212) -3.20457px 2.39389px 0px, rgb(0, 188, 212) -3.69721px 1.52664px 0px, rgb(0, 188, 212) -3.95997px 0.56448px 0px, rgb(0, 188, 212) -3.97652px -0.432781px 0px, rgb(0, 188, 212) -3.74583px -1.40313px 0px, rgb(0, 188, 212) -3.28224px -2.28625px 0px, rgb(0, 188, 212) -2.61457px -3.02721px 0px, rgb(0, 188, 212) -1.78435px -3.57996px 0px, rgb(0, 188, 212) -0.843183px -3.91012px 0px, rgb(0, 188, 212) 0.150409px -3.99717px 0px, rgb(0, 188, 212) 1.13465px -3.8357px 0px, rgb(0, 188, 212) 2.04834px -3.43574px 0px, rgb(0, 188, 212) 2.83468px -2.82216px 0px, rgb(0, 188, 212) 3.44477px -2.03312px 0px, rgb(0, 188, 212) 3.84068px -1.11766px 0px, rgb(0, 188, 212) 3.9978px -0.132717px 0px;
+  }
+/** リザルト - その他のプレイヤー */
+.result-players {
+  position: absolute;
+  left: 0px;
+  top: 1000px;
+  width: 100%;
+  text-align: center;
+  opacity: 0;
+  animation: result-fadein 1s ease 2s forwards;
+}
+  .result-players img {
+    width: 90px;
+    height: 90px;
+    margin: 0 10px;
+    border-radius: 50%;
+    border: 5px solid #00BCD4;
+  }
+/** リザルト - 戻る */
+.game-result-return {
+  position: absolute;
+  top: 1080px;
+  width: 360px;
+  left: 0px;
+  opacity: 0;
+  animation: result-fadein 1s ease 2.5s forwards;
+}
+/** リザルト - もう一回 */
+.game-result-again {
+  position: absolute;
+  top: 1080px;
+  width: 360px;
+  left: 360px;
+  opacity: 0;
+  animation: result-fadein 1s ease 2.5s forwards;
+}

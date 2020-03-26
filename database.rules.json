@@ -1,0 +1,73 @@
+{
+  "rules": {
+    
+    // デフォルト設定
+    ".read" : false, // 読み書きは
+    ".write": false, // 全員不可
+  	
+    // 部屋 rooms
+    "rooms": {
+      ".read" : "auth !== null", // 読み書きは
+      ".write": "auth !== null"  // 認証ユーザーなら誰でも可能
+    },
+  	
+    // サンプル公開部屋 sample-public-rooms
+    "sample-public-rooms": {
+      ".read" : "auth !== null", // 読み書きは
+      ".write": "auth !== null"  // 認証ユーザーなら誰でも可能
+    },
+  	
+    // サンプル鍵部屋 sample-private-rooms
+    "sample-private-rooms": {
+      "$room_id": {
+        // users/xxx/invited-rooms あるいは
+        // users/xxx/own-rooms にルームIDを保有していれば読み書き可能
+        ".read" : "root.child('users/'+auth.uid+'/invited-rooms/'+$room_id).exists() || root.child('users/'+auth.uid+'/own-rooms/'+$room_id).exists()",
+        ".write": "root.child('users/'+auth.uid+'/invited-rooms/'+$room_id).exists() || root.child('users/'+auth.uid+'/own-rooms/'+$room_id).exists()"
+      }
+    },
+    
+  	// サンプル記録 sample-records
+    "sample-records": {
+      ".read" : "auth !== null", // 読み書きは
+      ".write": "auth !== null"  // 認証ユーザーなら誰でも可能
+    },
+    
+  	// サンプルメッセージ sample-messages
+    "sample-messages": {
+      ".read" : "auth !== null", // 読み書きは
+      ".write": "auth !== null"  // 認証ユーザーなら誰でも可能
+    },
+    
+  	// サンプルメッセージ messages
+    "messages": {
+      ".read" : "auth !== null", // 読み書きは
+      ".write": "auth !== null"  // 認証ユーザーなら誰でも可能
+    },
+    
+  	// 管理ユーザー adminusers
+    // 管理ユーザーの情報は管理ユーザーしか読み書きできない！
+    // したがって外部からは読取も変更も不可能、Databaseを直接編集するしかない
+    "adminusers": {
+      ".read" : "root.child('adminusers/'+auth.uid).exists()", // 読み書きは
+      ".write": "root.child('adminusers/'+auth.uid).exists()"  // 管理ユーザーのみ可能
+    },
+    
+    // 全ユーザー users
+    "users": {
+      ".read": "auth !== null", // 読み取りは認証ユーザーなら原則誰でも可能
+      // ユーザー毎の設定 $user_id
+      "$user_id": {
+        ".write": "auth.uid === $user_id", // 書き込みできるのは自分の情報だけ
+        // 招待されている部屋 invited-rooms
+        "invited-rooms": {
+          ".read": "auth.uid === $user_id" // 読み取りできるのは自分の情報だけ
+        },
+        // 所有している部屋 own-rooms
+        "own-rooms": {
+          ".read": "auth.uid === $user_id" // 読み取りできるのは自分の情報だけ
+        }
+      }
+    },
+  }
+}

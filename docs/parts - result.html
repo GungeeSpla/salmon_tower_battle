@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ja" dir="ltr">
+  <head>
+    <meta charset="utf-8"/>
+    <title>HTMLパーツ - リザルト</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <!-- Viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover"/>
+    <!-- Style Sheets -->
+    <link rel="stylesheet" href="./assets/css/font.css">
+    <link rel="stylesheet" href="./assets/css/style.css">
+    <style>
+      body {
+        overflow: scroll;
+        background-color: #f1f1f1;
+        margin: 10px;
+      }
+      #createjs-container {
+        background-color: #00feff;
+        background-image: linear-gradient(0deg, #00feff 0%, #0070ff 100%);
+        display: inline-block;
+        position: relative;
+        margin: 5px;
+        width: 720px;
+        height: 1280px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ゲーム画面(リザルト) -->
+    <div id="createjs-container">
+      <div class="layer layer-0">
+        <div class="step-info selectable">1. Stinger</div><div class="ope-button-outer"><div class="drop-button clickable">落下</div><div class="rotate-button clickable"><img src="./assets/img/forcss/rotate.svg" /></div></div><div class="game-menu-rt clickable" onclick="document.querySelector('.game-menu-outer').style.setProperty('display', 'block');"></div>
+        <div class="game-menu-outer">
+          <div class="result-detail">
+            <div class="result-fall-count-desc">落ちてきた数</div>
+            <div class="result-fall-count">25匹</div>
+            <div class="result-ride-count-desc">最後に乗っていた数</div>
+            <div class="result-ride-count">25匹</div>
+            <div class="result-height-desc">積み上げた高さ</div>
+            <div class="result-height">19.99m</div>
+          </div>
+          <div class="result-win-text">WIN!</div>
+          <img class="result-screen" src="./assets/img/sample-game.png">
+          <div class="result-winner"><img src="./assets/img/favicon.png"><br><span>鮭太郎鮭太郎鮭太郎鮭太郎鮭太郎</span></div>
+          <div class="result-players">
+            <img src="./assets/img/favicon.png">
+            <img src="./assets/img/favicon.png">
+            <img src="./assets/img/favicon.png">
+            <img src="./assets/img/favicon.png">
+            <img src="./assets/img/favicon.png">
+          </div>
+          <div class="game-result-return">戻る</div>
+          <div class="game-result-again">もう一度</div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

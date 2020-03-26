@@ -1,0 +1,24 @@
+@font-face {
+  font-family: Splatoon1;
+  src:
+    url('../woff/s1kanji.woff2') format('woff2'),
+    url('../woff/s1kanji.woff') format('woff');
+}
+@font-face {
+  font-family: Splatoon1;
+  src:
+    url('../woff/s1kana.woff2') format('woff2'),
+    url('../woff/s1kana.woff') format('woff');
+}
+@font-face {
+  font-family: Splatoon2;
+  src:
+    url('../woff/s2kanji.woff2') format('woff2'),
+    url('../woff/s2kanji.woff') format('woff');
+}
+@font-face {
+  font-family: Splatoon2;
+  src:
+    url('../woff/s2kana.woff2') format('woff2'),
+    url('../woff/s2kana.woff') format('woff');
+}

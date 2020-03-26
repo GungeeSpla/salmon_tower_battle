@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ja" dir="ltr">
+  <head>
+    <meta charset="utf-8"/>
+    <title>サーモンタワーバトル</title>
+    <script>
+      window.INITIAL_LABEL = 'offline-game';
+    </script>
+    <!-- favicon -->
+    <link rel="icon" type="image/png" href="./assets/img/favicon.png">
+    <!-- Viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover"/>
+    <!-- Twitter Card -->
+    <meta name="twitter:card"        content="player" /> <!-- summary or summary_large_image or player -->
+    <meta name="twitter:site"        content="@GungeeSpla" />
+    <meta name="twitter:creator"     content="@GungeeSpla" />
+    <meta name="twitter:title"       content="サーモンタワーバトル" />
+    <meta name="twitter:description" content="シャケたちを積み上げろ！" />
+    <meta name="twitter:image"       content="https://salmon-tower-battle.web.app/assets/img/favicon.png" />
+    <meta name="twitter:url"         content="https://salmon-tower-battle.web.app/" />
+    <meta name="twitter:player"      content="https://salmon-tower-battle.web.app/game.html" />
+    <meta name="twitter:player:width"  content="720" />
+    <meta name="twitter:player:height" content="1280" />
+    <!-- PWA -->
+    <link rel="apple-touch-icon" href="./assets/img/favicon.png" />
+    <link rel="manifest" href="./assets/pwa/manifest.json">
+    <script>
+      if ('serviceWorker' in navigator) navigator.serviceWorker.register('./assets/pwa/service-worker.js');
+      console.warn = () => {};
+    </script>
+    <!-- Style Sheets -->
+    <link rel="stylesheet" href="./assets/css/font.css">
+    <link rel="stylesheet" href="./assets/css/style.css">
+    <!-- Firebase -->
+    <!--
+    <script src="./assets/js/libs/firebase-app-7.9.3.js"></script>
+    <script src="./assets/js/libs/firebase-auth-7.9.3.js"></script>
+    <script src="./assets/js/libs/firebase-database-7.9.3.js"></script>
+    <script src="./assets/js/libs/firebase-messaging-7.9.3.js"></script>
+    <script src="./assets/js/libs/firebase-storage-7.9.3.js"></script>
+    -->
+    <script src="https://www.gstatic.com/firebasejs/7.12.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.12.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.12.0/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.12.0/firebase-messaging.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.12.0/firebase-storage.js"></script>
+    <!-- LiquidFun -->
+    <script src="./assets/js/libs/liquidfun-1.1.0.js"></script>
+    <!-- EaselJS -->
+    <script src="./assets/js/libs/easeljs-1.0.0-NEXT.min.js"></script>
+    <!-- main -->
+    <!--
+    <script id="app" type="module" src="./assets/js/index.js?0.0.0"></script>
+    -->
+    <script id="app" type="module" src="./assets/js/bundle.js?0.0.0"></script>
+  </head>
+  <body>
+  </body>
+</html>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ja" dir="ltr">
+  <head>
+    <meta charset="utf-8"/>
+    <title>テスト - Firebase JavaScript SDK</title>
+    <script src="./assets/js/libs/firebase-app-7.9.3.js"></script>
+    <script src="./assets/js/libs/firebase-auth-7.9.3.js"></script>
+    <script src="./assets/js/libs/firebase-database-7.9.3.js"></script>
+    <script src="./assets/js/libs/firebase-messaging-7.9.3.js"></script>
+    <script src="./assets/js/libs/firebase-storage-7.9.3.js"></script>
+    <script>
+      const roomName = 'the-room';
+      const roomsPath = 'test-rooms';
+      const roomPath = `${roomsPath}/${roomName}`;
+      const membersPath = `${roomsPath}/${roomName}/members`;
+      const style1 = 'background: linear-gradient(transparent 60%, lightblue 60%); font-weight: bold;';
+      const style2 = 'background: linear-gradient(transparent 60%, lightsalmon 60%); font-weight: bold;';
+      const style3 = 'background: blue; color: white; padding-left: 2px; font-weight: bold;';
+      const style4 = 'background: red; color: white; padding-left: 2px; font-weight: bold;';
+      function init() {
+        const project = firebase.initializeApp({
+          apiKey: "AIzaSyCmKBMAKgSz__8zRb4fRAB3UVsnY-gRHuo",
+          authDomain: "salmon-tower-battle.firebaseapp.com",
+          databaseURL: "https://salmon-tower-battle.firebaseio.com",
+          projectId: "salmon-tower-battle",
+          storageBucket: "salmon-tower-battle.appspot.com",
+          messagingSenderId: "703361093744",
+          appId: "1:703361093744:web:45e7b1e7c0e69e847da4b5"
+        });
+        console.log(`project: %o`, project);
+        $('database-url').textContent = project.options.databaseURL;
+        $('database-url').href = project.options.databaseURL;
+        firebase.auth().onAuthStateChanged((user) => {
+          if (user) {
+            $('sign-state').textContent = `${user.displayName} としてサインイン中`;
+          } else {
+            $('sign-state').textContent = 'サインインしていません';
+          }
+        });
+        firebase.database().ref(roomsPath).on('child_added', (snap) => {
+          console.log(`%croom_added!%c ${snap.key}: %o`, style3, '', snap.val());
+        });
+        firebase.database().ref(roomsPath).on('child_removed', (snap) => {
+          console.log(`%croom_removed!%c ${snap.key}: %o`, style4, '', snap.val());
+        });
+        setupRoom();
+      }
+      async function setupRoom() {
+        firebase.database().ref(membersPath).off();
+        firebase.database().ref(membersPath).on('child_added', (snap) => {
+          console.log(`%cchild_added!%c ${snap.key}: %o`, style1, '', snap.val());
+          if (!$(snap.key)) {
+            const span = document.createElement('span');
+            span.id = snap.key;
+            span.textContent  = snap.key;
+            $('members').appendChild(span);
+          }
+        });
+        firebase.database().ref(membersPath).on('child_changed', (snap) => {
+          console.log(`%cchild_changed!%c ${snap.key}: %o`, style1, '', snap.val());
+        });
+        firebase.database().ref(membersPath).on('child_removed', (snap) => {
+          console.log(`%cchild_removed!%c ${snap.key}: %o`, style2, '', snap.val());
+          const span = $(snap.key);
+          if (span) {
+            span.parentNode.removeChild(span);
+          }
+        });
+      }
+      function $(id) {
+        return document.getElementById(id);
+      }
+      function signIn() {
+        const provider = new firebase.auth.TwitterAuthProvider();
+        firebase.auth().signInWithRedirect(provider);
+      }
+      async function createRoom() {
+        await firebase.database().ref(roomPath).update({ members: null, test: true });
+        setupRoom();
+      }
+      async function destroyRoom() {
+        await firebase.database().ref(roomPath).remove();
+        firebase.database().ref(membersPath).off();
+      }
+      function addMember(name) {
+        firebase.database().ref(`${roomPath}/members/${name}`).update({ test: true });
+      }
+      function removeMember(name) {
+        firebase.database().ref(`${roomPath}/members/${name}`).remove();
+      }
+    </script>
+    <style>
+      body {
+        background: #eee;
+        color: #333;
+      }
+      body, input, button {
+        font-size: 16px;
+        color: #333;
+      }
+      div {
+        background: #fff;
+        margin: 20px;
+      }
+      #members:after {
+        content: '　';
+      }
+      #members span:after {
+        content: ', ';
+      }
+      #members span:last-child:after {
+        content: '';
+      }
+    </style>
+  </head>
+  <body onload="init();">
+    <div>
+      <a id="database-url" href="" target="_blank"></a>
+    </div>
+    <div id="sign-state">通信中</div>
+    <div>
+      <button onload="signIn();">Twitterでサインイン</button>
+    </div>
+    <div>
+      <button onclick="createRoom();">部屋を作る</button>
+      <button onclick="destroyRoom();">部屋を壊す</button>
+    </div>
+    <div>
+      <button onclick="addMember('Ichiro');">イチローを追加</button>
+      <button onclick="addMember('Jiro');">ジローを追加</button>
+      <button onclick="addMember('Saburo');">サブローを追加</button>
+    </div>
+    <div>
+      <button onclick="removeMember('Ichiro');">イチローを削除</button>
+      <button onclick="removeMember('Jiro');">ジローを削除</button>
+      <button onclick="removeMember('Saburo');">サブローを削除</button>
+    </div>
+    <div id="members"></div>
+  </body>
+</html>

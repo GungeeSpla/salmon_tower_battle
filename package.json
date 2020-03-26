@@ -1,0 +1,13 @@
+{
+  "scripts": {
+    "build": "webpack",
+    "serve": "firebase serve",
+    "deploy": "firebase deploy --only hosting",
+    "deploy-rules": "firebase deploy --only database",
+    "open": "firebase open hosting:site"
+  },
+  "devDependencies": {
+    "webpack": "^4.41.6",
+    "webpack-cli": "^3.3.11"
+  }
+}

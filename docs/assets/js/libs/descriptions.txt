@@ -1,0 +1,24 @@
+『サーモンタワーバトル』で使用しているJavaScriptライブラリ一覧
+----------------------------------------------------------------------------------------------------
+【ファイル名】liquidfun-1.1.0.js
+【ライブラリ】LiquidFun
+【バージョン】1.1.0（2018.1.11更新）
+【入　手　先】https://github.com/google/liquidfun/tree/master/liquidfun/Box2D/lfjs
+【ライセンス】https://github.com/google/liquidfun/blob/master/liquidfun/Box2D/License.txt
+----------------------------------------------------------------------------------------------------
+【ファイル名】easeljs-1.0.0-NEXT.min.js
+【ライブラリ】EaselJS
+【バージョン】1.0.0-NEXT（2018.9.7更新）
+【入　手　先】https://github.com/CreateJS/EaselJS/tree/master/lib
+【ライセンス】https://github.com/CreateJS/EaselJS/blob/master/LICENSE.txt
+----------------------------------------------------------------------------------------------------
+【ファイル名】firebase-XXX-7.9.3.js
+【ライブラリ】Firebase JS SDK
+【バージョン】7.9.3（2020.2.29更新）
+【ノ　ー　ト】https://firebase.google.com/support/release-notes/js?hl=ja
+【入　手　先】https://www.gstatic.com/firebasejs/7.9.3/firebase-app.js
+　　　　　　　https://www.gstatic.com/firebasejs/7.9.3/firebase-auth.js
+　　　　　　　https://www.gstatic.com/firebasejs/7.9.3/firebase-database.js
+　　　　　　　https://www.gstatic.com/firebasejs/7.9.3/firebase-messaging.js
+　　　　　　　https://www.gstatic.com/firebasejs/7.9.3/firebase-storage.js
+【ライセンス】https://github.com/firebase/firebase-js-sdk/blob/master/LICENSE
