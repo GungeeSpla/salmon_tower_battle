@@ -9,6 +9,7 @@ export const LOADING = {
   /** enter() */
   async enter() {
     let loadedNum = 0;
+    const pCount = document.getElementById('loaded-count');
     const targetUrls = [
       './assets/img/forcss/volume-0.png',
       './assets/img/forcss/volume-1.png',
@@ -23,6 +24,7 @@ export const LOADING = {
     function count() {
       loadedNum += 1;
       const p = Math.floor(100 * loadedNum / targetNum);
+      pCount.textContent = `${loadedNum}/${targetNum}`;
       // console.log(`${p}% loaded`);
     }
     this.app.view.showLoading();
@@ -37,6 +39,7 @@ export const LOADING = {
       count();
     }
     setTimeout(() => {
+      pCount.parentNode.removeChild(pCount);
       this.app.view.hideLoading();
       this.app.view.firstJump();
     }, 100);

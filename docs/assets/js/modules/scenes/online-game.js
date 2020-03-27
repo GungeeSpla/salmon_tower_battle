@@ -47,9 +47,10 @@ export const SCENE_ONLINE_GAME = {
     this.append({
       id: 'ones-turn-outer',
       class: 'ope-button-outer',
+      style: { display: 'none' },
       contents: [{
         class: 'turn-title selectable',
-        text: '<span id="turn-name">サーモン太郎</span>のターン',
+        text: 'ones-turn',
       }],
     });
     //

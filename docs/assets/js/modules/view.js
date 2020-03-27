@@ -373,6 +373,7 @@ export function initialize(targetLabel = constants.INITIAL_LABEL) {
       </svg>
     </p>
     <p style="margin-left: 35px;">LOADING…</p>
+    <p id="loaded-count"></p>
   </div>`;
   // アラートレイヤーの中身を作成する
   layers.alert.style.setProperty('display', 'none');

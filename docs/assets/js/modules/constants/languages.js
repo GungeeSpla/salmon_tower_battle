@@ -237,6 +237,10 @@ const LANGUAGES = {
     ja: '落下',
     en: 'DROP',
   },
+  'ones-turn': {
+    ja: '<span id="turn-name"></span>のターン',
+    en: '<span id="turn-name"></span>\'s Turn',
+  },
   'your-turn': {
     ja: 'あなたのターン！',
     en: 'Your Turn!',
