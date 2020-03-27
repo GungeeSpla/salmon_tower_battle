@@ -1206,32 +1206,32 @@ p, div, canvas {
     white-space: nowrap;
   }
 /** (オフラインモード) 高さ */
+.game-random-seed,
+.game-panel-count,
 .game-tower-height {
   z-index: 0;
   position: absolute;
   display: block;
   left: 35px;
-  top: 250px;
+  top: 300px;
   width: 100%;
   height: 60px;
   line-height: 35px;
   font-size: 35px;
+  opacity: 1;
 }
+.game-random-seed span:first-child:after,
 .game-panel-count span:first-child:after,
 .game-tower-height span:first-child:after {
   content: ': ';
 }
 /** (オフラインモード) パネルの数 */
 .game-panel-count {
-  z-index: 0;
-  position: absolute;
-  display: block;
-  left: 35px;
+  top: 250px;
+}
+/** (オフラインモード) 乱数シード */
+.game-random-seed {
   top: 200px;
-  width: 100%;
-  height: 60px;
-  line-height: 35px;
-  font-size: 35px;
 }
 /** 残り時間 */
 .left-time {

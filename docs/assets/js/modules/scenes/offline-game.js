@@ -8,6 +8,16 @@ export const SCENE_OFFLINE_GAME = {
     // パネル数と高さ
     //
     this.append({
+      class: 'game-random-seed',
+      contents: [{
+        tag: 'span',
+        text: 'offline-seed',
+      }, {
+        tag: 'span',
+        class: 'count',
+      }],
+    });
+    this.append({
       class: 'game-panel-count',
       contents: [{
         tag: 'span',
@@ -119,6 +129,9 @@ export const SCENE_OFFLINE_GAME = {
         },
       }],
     });
+    this.utilities.addDocumentEventListener('gamebegin', (e) => {
+      document.querySelector('.game-random-seed .count').textContent = `${e.detail.seed}`;
+    });
     this.utilities.addDocumentEventListener('gamestep', (e) => {
       const counter = this.app.view.getTranslatedText('salmonid-counter');
       document.querySelector('.game-tower-height .count').textContent = `${e.detail.towerHeight} m`;
@@ -131,6 +144,7 @@ export const SCENE_OFFLINE_GAME = {
       { uid: '1P', displayName: '1P' },
     ]);
     this.app.game.setUnixSeed();
+    this.app.game.setTodaySeed();
     this.app.game.beginGame();
     // this.utilities.addDocumentEventListener('canvasresize.bottom-buttons', this.oncanvasresize);
   },
@@ -150,6 +164,7 @@ export const SCENE_OFFLINE_GAME = {
 
   /** leave() */
   leave() {
+    this.utilities.removeDocumentEventListener('gamebegin');
     this.utilities.removeDocumentEventListener('gamestep');
     this.app.game.finishGame();
     // this.utilities.removeDocumentEventListener('canvasresize.bottom-buttons');

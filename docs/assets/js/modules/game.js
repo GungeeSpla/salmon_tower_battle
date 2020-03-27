@@ -95,11 +95,18 @@ export function getSeed() {
   return gameSeed;
 }
 
+/** setTodaySeed()
+ * シード値を日付で設定します。
+ */
+export function setTodaySeed() {
+  gameSeed = utilities.getTimestamp().date;
+}
+
 /** setUnixSeed()
  * シード値をUNIX時刻に設定します。
  */
 export function setUnixSeed() {
-  gameSeed = new Date().getTime();
+  gameSeed = utilities.getTimestamp().unix;
 }
 
 /** setTimeLimit(time)
@@ -1109,6 +1116,9 @@ export async function beginGame(room) {
   isFinished = false;
   // ハンドルティックを登録
   createjs.Ticker.on('tick', handleTickStage);
+  utilities.dispatchDocumentEvent('gamebegin', {
+    seed,
+  });
   // ログ
   logger.log(`Seed: ${seed}`);
   logger.log(`Monster Tiles: ${JSON.stringify(monsterTiles)}`);

@@ -26,8 +26,8 @@ const LANGUAGES = {
     en: 'You can invite and play with friends!',
   },
   'play-in-offline': {
-    ja: 'オフラインで遊ぶ',
-    en: 'Play in Offline',
+    ja: 'ひとりで遊ぶ',
+    en: 'Play by Myself',
   },
   'play-in-offline-footer': {
     ja: 'ひとりでとことん練習できる！',
@@ -200,9 +200,13 @@ const LANGUAGES = {
     ja: '匹',
     en: '',
   },
+  'offline-seed': {
+    ja: 'シード値',
+    en: 'Seed',
+  },
   'offline-salmonids': {
     ja: '乗っている数',
-    en: 'Salmonids',
+    en: 'Remaining',
   },
   'offline-height': {
     ja: '高さ',

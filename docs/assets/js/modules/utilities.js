@@ -262,9 +262,10 @@ export function getTimestamp() {
   const h = padding00(now.getHours());
   const m = padding00(now.getMinutes());
   const s = padding00(now.getSeconds());
-  const unix = Math.floor(now.getTime() / 10000);
+  const date = Y + M + D;
+  const unix = Math.floor(now.getTime() / 1000);
   const string = `${Y}/${M}/${D} ${h}:${m}:${s}`;
-  return { unix, string };
+  return { date, unix, string };
 }
 
 /** existsElectron()

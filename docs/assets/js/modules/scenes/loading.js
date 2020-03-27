@@ -17,6 +17,7 @@ export const LOADING = {
       './assets/img/forcss/mask-hooked.png',
       './assets/img/forcss/mask-holed.png',
       './assets/img/forcss/mask-chipped.svg',
+      './assets/img/forcss/wave-1.png',
     ];
     const targetNum = targetUrls.length + MONSTERS_DATA.length * 2;
     function count() {
