@@ -2,7 +2,7 @@
 // 全体
 //
 /** アプリのバージョン */
-export const APP_VERSION = '0.3.0';
+export const APP_VERSION = '0.4.0';
 /** 読んでいるindex.jsまたはbundle.jsのクエリを含むファイル名 */
 const appfile = document.getElementById('app').getAttribute('src');
 /** アプリを読み込んだ際のURLクエリパラメータ */
@@ -178,7 +178,7 @@ export const METER = 100;
 /** 1メートルに対応するピクセル数 別の用途で用いる */
 export const METER_B = 170;
 /** 重力加速度(現実では約9.8) */
-export const GRAVITY = 4;
+export const GRAVITY = 3;
 /** 時間のステップ */
 export const TIME_STEP = 1 / FRAME_RATE;
 /** 速度の計算回数 */
@@ -208,7 +208,7 @@ export const CLOUD_ANIMATION_DURATION = 2000;
 /** すべてのパネルが静止してから次のパネルを生成するまでの余白時間(msec) */
 export const PANEL_CREATE_DURATION = 400;
 /** (飛び出した場合)すべてのパネルが静止してから次のパネルを生成するまでの余白時間(msec) */
-export const PANEL_CREATE_DURATION_JUMPED = 800;
+export const PANEL_CREATE_DURATION_JUMPED = 1200;
 /** (オンライン時)フレンドの操作のアニメーション時間(msec) */
 export const SYNC_OPERATE_ANIMATION_DURATION = 800;
 /** (オンライン時)非落下操作の同期を取る間隔(msec) */

@@ -157,15 +157,21 @@ export default class Panel {
     // クリック領域
     if (this.image && !this.isField && this.isOperable) {
       this.cjsClick = new createjs.Shape();
-      this.cjsClick.isClickObject = true;
+      //this.cjsClick.isClickObject = true;
       this.cjsClick.set({
-        x: 0,
-        y: 0,
+        // x: 0,
+        // y: 0,
+        x: this.x,
+        y: this.y,
+        regX: Math.floor(this.width / 2),
+        regY: Math.floor(this.height / 2),
       });
       this.cjsClick.graphics
-        .beginFill('#ffffff')
-        .rect(0, 0, this.image.naturalWidth, this.image.naturalHeight);
-      // this.stage.addChild(this.cjsClick);
+        .beginFill('rgba(255, 255, 255, 0.01)')
+        // .rect(0, 0, this.image.naturalWidth, this.image.naturalHeight);
+        .rect(0, 0, this.width, this.height);
+      this.cjsClick.cache(0, 0, this.width, this.height);
+      this.stage.addChild(this.cjsClick);
       this.cjsObjects.push(this.cjsClick);
     }
     // 画像
@@ -178,7 +184,7 @@ export default class Panel {
         scaleY: this.width / this.image.naturalWidth,
         regX: Math.floor(this.image.naturalWidth / 2),
         regY: Math.floor(this.image.naturalHeight / 2),
-        hitArea: this.cjsClick,
+        // hitArea: this.cjsClick,
       });
       this.stage.addChild(this.cjsBitmap);
       this.cjsObjects.push(this.cjsBitmap);
@@ -256,9 +262,10 @@ export default class Panel {
     //
     let startX;
     // ホバー時のマウスカーソルをpointerに設定
-    this.cjsBitmap.cursor = 'pointer';
+    const cjsTarget = this.cjsClick;
+    cjsTarget.cursor = 'pointer';
     // mousedown … マウスボタンを押下したとき
-    this.lisners.onmousedown = this.cjsBitmap.on('mousedown', () => {
+    this.lisners.onmousedown = cjsTarget.on('mousedown', () => {
       // ホイールクリックでドロップできるようにする
       // if (window.event && window.event.button >= 1) {
       //   this.drop();
@@ -269,7 +276,7 @@ export default class Panel {
       // オブジェクトが落下中ではないならば、ドラッグ操作を開始する
       if (this.needsOperate()) {
         // マージンの計算
-        marginX = this.stage.mouseX - this.cjsBitmap.x;
+        marginX = this.stage.mouseX - cjsTarget.x;
         // オブジェクトを起こす
         this.physicsBody.SetAwake(true);
         // マウスダウンした時間
@@ -281,7 +288,7 @@ export default class Panel {
       }
     });
     // pressmove … ドラッグしたとき
-    this.lisners.onpressmove = this.cjsBitmap.on('pressmove', () => {
+    this.lisners.onpressmove = cjsTarget.on('pressmove', () => {
       // 現在操作可能であり、かつ、
       // マウスボタン押下フラグが立っており、かつ、
       // オブジェクトが落下中ではないならば、ドラッグ操作による移動を行う
@@ -296,7 +303,7 @@ export default class Panel {
       }
     });
     // pressup … マウスボタンを離したとき
-    this.lisners.onpressup = this.cjsBitmap.on('pressup', () => {
+    this.lisners.onpressup = cjsTarget.on('pressup', () => {
       if (isMouseDown && this.isMovable()) {
         if (startX === this.stage.mouseX && (utilities.getTime() - now) < 200) {
           this.rotate();
@@ -310,10 +317,13 @@ export default class Panel {
   /** .removeDragEvent()
    */
   removeDragEvent() {
-    this.cjsBitmap.cursor = '';
-    this.cjsBitmap.off('mousedown', this.lisners.onmousedown);
-    this.cjsBitmap.off('pressmove', this.lisners.onpressmove);
-    this.cjsBitmap.off('pressup', this.lisners.onpressup);
+    const cjsTarget = this.cjsClick;
+    if (cjsTarget) {
+      cjsTarget.cursor = '';
+      cjsTarget.off('mousedown', this.lisners.onmousedown);
+      cjsTarget.off('pressmove', this.lisners.onpressmove);
+      cjsTarget.off('pressup', this.lisners.onpressup);
+    }
   }
 
   /** .refreshStroke(isAwake)
@@ -461,7 +471,6 @@ export default class Panel {
   }
 
   /** .tick(bool)
-   * オブジェクトのハンドルティック関数を生成して返します。
    * @return {boolean} bool - 強制的に描画しなおすかどうか
    */
   tick(bool) {
@@ -482,6 +491,9 @@ export default class Panel {
       // 画像の位置と回転を同期する
       if (this.cjsBitmap) {
         this.cjsBitmap.set(transform);
+      }
+      if (this.cjsClick) {
+        this.cjsClick.set(transform);
       }
       if (this.cjsCloud) {
         this.cjsCloud.set({
@@ -654,6 +666,10 @@ export default class Panel {
     // 現在回転アニメーション中ではないならば
     // 操作を最終決定して落とす！
     if (this.physicsBody.animater.queue.length === 0) {
+      if (this.cjsClick) {
+        this.stage.removeChild(this.cjsClick);
+        this.cjsClick = null;
+      }
       // 操作情報を記録する
       const operation = this.createOperation(true);
       utilities.setB2BodyXYAngle({

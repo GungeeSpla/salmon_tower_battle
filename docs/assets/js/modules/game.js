@@ -644,6 +644,7 @@ export function syncPanelStates(json) {
           y: state.y,
           angle: state.a,
         });
+        panel.tick();
       }
     }
   }
@@ -654,10 +655,6 @@ export function syncPanelStates(json) {
   const time = (operationPanel.hasJumpedOut)
     ? constants.PANEL_CREATE_DURATION_JUMPED
     : constants.PANEL_CREATE_DURATION;
-  setTimeout(() => {
-    // 次のパネルに進めるかどうかを判定
-    judgeNextPanel(hasJumpedOut);
-  }, time);
   // とりあえず再描画する
   stage.update();
   // operationPanelは消す
@@ -669,6 +666,10 @@ export function syncPanelStates(json) {
   stage.uncache();
   // 高さを計算
   towerHeight = utilities.round((floorY - getObjectMinY()) / constants.METER_B, 2);
+  setTimeout(() => {
+    // 次のパネルに進めるかどうかを判定
+    judgeNextPanel(hasJumpedOut);
+  }, time);
 }
 
 /** createPanelStates()
@@ -1127,9 +1128,9 @@ export async function beginGame(room) {
 }
 
 /** execOperationLR(delta)
-   * 操作オブジェクトを左右に動かします。
-   * @param {number} delta - 動かす量(m)
-   */
+ * 操作オブジェクトを左右に動かします。
+ * @param {number} delta - 動かす量(m)
+ */
 export function execOperationLR(delta) {
   // 操作対象のオブジェクトが存在するなら
   if (operationPanel && operationPanel.isOperable && !operationPanel.isFalled) {
